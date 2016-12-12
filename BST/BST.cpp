@@ -1,9 +1,11 @@
-
-//Binary Search Tree Program
-
 #include "stdafx.h"
 #include <iostream>
 #include <cstdlib>
+#include <conio.h>
+#include <Windows.h>
+#include <cstdio>
+#include <cmath>
+
 using namespace std;
 
 class BinarySearchTree
@@ -30,8 +32,12 @@ public:
 	void preorder(tree_node*);
 	void print_postorder();
 	void postorder(tree_node*);
+	void window(int x, int y, int maxX, int maxY);
 	void insert(int);
 	void remove(int);
+	void gotoxy(int x, int y);
+	int wherex();
+	int wherey();
 };
 
 // Smaller elements go left
@@ -108,17 +114,95 @@ void BinarySearchTree::remove(int d)
 	// 3. we're removing a node with 2 children
 
 	// Node with single child
-	
+	//if ((curr->left == NULL && curr->right != NULL) || (curr->left != NULL
+	//	&& curr->right == NULL))
+	//{
+	//	if (curr->left == NULL && curr->right != NULL)
+	//	{
+	//		if (parent->left == curr)
+	//		{
+	//			parent->left = curr->right;
+	//			delete curr;
+	//		}
+	//		else
+	//		{
+	//			parent->right = curr->right;
+	//			delete curr;
+	//		}
+	//	}
+	//	else // left child present, no right child
+	//	{
+	//		if (parent->left == curr)
+	//		{
+	//			parent->left = curr->left;
+	//			delete curr;
+	//		}
+	//		else
+	//		{
+	//			parent->right = curr->left;
+	//			delete curr;
+	//		}
+	//	}
+	//	return;
+	//}
 
-	//We're looking at a leaf node
-	
+	////We're looking at a leaf node
+	//if (curr->left == NULL && curr->right == NULL)
+	//{
+	//	if (parent->left == curr) parent->left = NULL;
+	//	else parent->right = NULL;
+	//	delete curr;
+	//	return;
+	//}
 
 
-	//Node with 2 children
-	// replace node with smallest value in right subtree
-	
+	////Node with 2 children
+	//// replace node with smallest value in right subtree
+	//if (curr->left != NULL && curr->right != NULL)
+	//{
+	//	tree_node* chkr;
+	//	chkr = curr->right;
+	//	if ((chkr->left == NULL) && (chkr->right == NULL))
+	//	{
+	//		curr = chkr;
+	//		delete chkr;
+	//		curr->right = NULL;
+	//	}
+	//	else // right child has children
+	//	{
+	//		//if the node's right child has a left child
+	//		// Move all the way down left to locate smallest element
+
+	//		if ((curr->right)->left != NULL)
+	//		{
+	//			tree_node* lcurr;
+	//			tree_node* lcurrp;
+	//			lcurrp = curr->right;
+	//			lcurr = (curr->right)->left;
+	//			while (lcurr->left != NULL)
+	//			{
+	//				lcurrp = lcurr;
+	//				lcurr = lcurr->left;
+	//			}
+	//			curr->data = lcurr->data;
+	//			delete lcurr;
+	//			lcurrp->left = NULL;
+	//		}
+	//		else
+	//		{
+	//			tree_node* tmp;
+	//			tmp = curr->right;
+	//			curr->data = tmp->data;
+	//			curr->right = tmp->right;
+	//			delete tmp;
+	//		}
+
+	//	}
+	//	return;
+	//}
 
 }
+
 
 void BinarySearchTree::print_inorder()
 {
@@ -168,15 +252,56 @@ void BinarySearchTree::postorder(tree_node* p)
 	else return;
 }
 
+void BinarySearchTree::gotoxy(int x, int y)
+{
+	COORD c;
+	c.X = x;
+	c.Y = y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
+
+}
+int BinarySearchTree::wherex()
+{
+
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+	return csbi.dwCursorPosition.X;
+
+}
+int BinarySearchTree::wherey()
+{
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+	return csbi.dwCursorPosition.Y;
+
+}
+
+void BinarySearchTree::window(int x, int y, int maxX, int maxY)
+{
+	for (int i = 0; i <= maxX; i++)
+	{
+		for (int j = 0; j <= maxY; j=j+2)
+		{
+			gotoxy(i, j);
+			cout << ".";
+		}
+	}
+	return;
+}
+
 int main()
 {
 	BinarySearchTree b;
+	int maxConsoleX = 79;
+	int maxConsoleY = 15;
+	int consoleX = 1, consoleY = 1;
 	int ch, tmp, tmp1;
 	while (1)
 	{
+		b.window(consoleX, consoleY, maxConsoleX, maxConsoleY);
 		cout << endl << endl;
+		cout << " ------------------------------------------------------------------------------ " << endl;
 		cout << " Binary Search Tree Operations " << endl;
-		cout << " ----------------------------- " << endl;
 		cout << " 1. Insertion/Creation " << endl;
 		cout << " 2. In-Order Traversal " << endl;
 		cout << " 3. Pre-Order Traversal " << endl;
@@ -188,8 +313,19 @@ int main()
 		switch (ch)
 		{
 		case 1: cout << " Enter Number to be inserted : ";
-			cin >> tmp;
-			b.insert(tmp);
+			//cin >> tmp;
+			b.insert(50);
+			b.insert(25);
+			b.insert(75);
+			b.insert(77);
+			b.insert(2);
+			b.insert(27);
+			b.insert(56);
+			b.insert(3);
+			b.insert(1);
+			b.insert(26);
+			b.insert(28);
+			//b.insert(tmp);
 			break;
 		case 2: cout << endl;
 			cout << " In-Order Traversal " << endl;
